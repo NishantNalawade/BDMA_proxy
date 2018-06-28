@@ -1,0 +1,11 @@
+--- 
+applications: 
+  - 
+    buildpack: java_buildpack
+    disk_quota: 512M
+    host: alexaservice
+    instances: 1
+    memory: 1G
+    name: pservice
+    path: target/iotService-0.0.1-SNAPSHOT.jar
+
