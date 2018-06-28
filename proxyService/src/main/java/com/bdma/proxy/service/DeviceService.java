@@ -80,7 +80,7 @@ public class DeviceService {
 		try {
 			String respBody = getResponseFromCng(URL, httpMethod, null);
 			if (respBody != null) {
-				System.out.println("Inside status");
+				System.out.println("Hello Inside status");
 			JSONObject jsonObject = null;
 			try {
 				jsonObject = new JSONObject(respBody);
