@@ -37,11 +37,18 @@ public class DeviceController {
 		return deviceService.status(HttpMethod.GET);
 	}
 	
-	@RequestMapping("/cluster_type")
+	@RequestMapping("/metric_insights")
 	public String cluster_type() throws ProxyServicesException, JSONException{
-		return deviceService.cluster_type(HttpMethod.GET);
+		return deviceService.metric_insights(HttpMethod.GET);
 	}
-
+	@RequestMapping("/product")
+	public String product() throws ProxyServicesException, JSONException{
+		return deviceService.product(HttpMethod.GET);
+	}
+	@RequestMapping("/service")
+	public String service() throws ProxyServicesException, JSONException{
+		return deviceService.service(HttpMethod.GET);
+	}
 //	
 //	@RequestMapping("/deviceTypes/{tenantId}/{categoryId}")
 //	public List<DeviceType> getDeviceTypes(@PathVariable String tenantId,@PathVariable String categoryId) throws ProxyServicesException{
