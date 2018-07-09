@@ -1,5 +1,6 @@
 package com.bdma.proxy.service;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,10 +67,11 @@ public class DeviceService {
 		}
 		return respBody;
 	}
-
+// This method is to show MI
 	public String status(HttpMethod httpMethod) throws JSONException {
+		
 		String output = null;
-		String URL = "https://telcobigdata-test-margin-assurance-run-settings-definition.cfapps.sap.hana.ondemand.com/runsettingsdefinition/CalculationRuns?$orderby=CREATED_AT desc&$top=1";
+		String URL = "https://telcobigdata-test-margin-assurance-run-settings-definition.cfapps.sap.hana.ondemand.com/runsettingsdefinition/CalculationRuns?$filter=DESCRIPTION_RUN eq 'Smart Product Group'";
 //		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL)
 		        // Add query parameter
 		//		.queryParam("$orderby", "CREATED_AT desc")
@@ -80,7 +82,7 @@ public class DeviceService {
 		try {
 			String respBody = getResponseFromCng(URL, httpMethod, null);
 			if (respBody != null) {
-				System.out.println("Hello Inside status");
+				//System.out.println("Hello Inside status");
 			JSONObject jsonObject = null;
 			try {
 				jsonObject = new JSONObject(respBody);
@@ -88,18 +90,19 @@ public class DeviceService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Array Searching");
+		//	System.out.println("Array Searching");
 			JSONArray results = jsonObject.getJSONObject("d").getJSONArray("results");
 			
-			System.out.println(" After Results");
+			//System.out.println(" After Results");
 //			for ( int i = 0; i < results.length(); i++) {
 //			int i = 0;
 //				String category = new Category(results.getJSONObject(i).getString("STATUS"),
-//						results.getJSONObject.getString("DESCRIPTION"));
-				output = "The Name of the last run is " + results.getJSONObject(0).getString("DESCRIPTION_RUN");
-				output = output + ". The Description of last run is " + results.getJSONObject(0).getString("DESCRIPTION_RUN").toLowerCase();
-				output =  output + " and the status is " + results.getJSONObject(0).getString("STATUS").toLowerCase() +".";
-				System.out.println(output);
+//						results.getJSONObject.getString("DESCRIPTION"));(Math.round(NumberUtils.toDouble(s)));
+				output = "The Customers are unprofitable because their AMPU is " +Math.round(NumberUtils.toDouble (results.getJSONObject(0).getString("TOTAL_MARGIN_IMPACT"))) + " which is highly negative.";
+				//output = output + ". The Description of last run is " + results.getJSONObject(0).getString("DESCRIPTION_RUN").toLowerCase();
+				//output =  output + " and the status is " + results.getJSONObject(0).getString("STATUS").toLowerCase() +".";
+			//output = "The lastes tproduct Smart Group is very un Profitable"	;
+			System.out.println(output);
 				
 //				categories.add(category);
 				
@@ -113,16 +116,36 @@ public class DeviceService {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	public String cluster_type(HttpMethod httpMethod) throws JSONException {
+	// just to show smart product is unprofitable.
+	public String product(HttpMethod httpMethod) throws JSONException {
 		String output = null;
-		String URL = "https://telcobigdata-test-margin-assurance-run-settings-definition.cfapps.sap.hana.ondemand.com/runsettingsdefinition/CalculationRuns?$orderby=CREATED_AT desc&$top=1";
-//		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL)
+
+	try {
+//			
+		output = "The latest product Smart Group is very unprofitable."	;
+			System.out.println(output);
+				
+//				categories.add(category);
+				
+//			}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+	}
+	
+		
+	
+	public String metric_insights(HttpMethod httpMethod) throws JSONException {
+		String output = null;
+		//String URL = "https://telcobigdata-test-margin-assurance-run-settings-definition.cfapps.sap.hana.ondemand.com/runsettingsdefinition/CalculationRuns?$filter = DESCRIPTION_RUN eq 'Smart Product Group'&$orderby=CREATED_AT desc&$top=1";
+
+		String URL = "https://telcobigdata-test-margin-assurance-result-explorer.cfapps.sap.hana.ondemand.com/resultexplorer/ResultCompareMarginElementss?$filter=SELECTION_ID eq '9018' and PEER_GROUP_ID eq '0' and CLUSTER_NUMBER eq '999999' and COMPARISON_TYPE eq '0' "
+				+ " and (ELEMENT eq 'INDIRECT_COST_AMOUNT' or ELEMENT eq 'INCLUSIVE_DURATION')"
+				+ "&$orderby=DEVIATION desc";
+		//		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL)
 		        // Add query parameter
 		//		.queryParam("$orderby", "CREATED_AT desc")
 //				.queryParam("order", "desc")
@@ -140,11 +163,11 @@ public class DeviceService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			System.out.println("Array Searching");
+			//System.out.println("Array Searching");
 			JSONArray results = jsonObject.getJSONObject("d").getJSONArray("results");
 			
-			System.out.println(" After Results");
-				output = "The Cluster type is " + results.getJSONObject(0).getString("CLUSTER_TYPE").toLowerCase();
+			//System.out.println(" After Results");
+				output = "The Average Voice Usage is " + Math.round(NumberUtils.toDouble (results.getJSONObject(1).getString("OUTLIER_PERCENTAGE")))/1024 + " GB,which is resulting in high indirect cost of " + Math.round(NumberUtils.toDouble (results.getJSONObject(0).getString("OUTLIER_PERCENTAGE")));
 				System.out.println(output);				
 //				categories.add(category);
 				
@@ -156,7 +179,47 @@ public class DeviceService {
 		}
 		return output;
 	}
-	
+
+	public String service(HttpMethod httpMethod) throws JSONException {
+		String output = null;
+		//String URL = "https://telcobigdata-test-margin-assurance-run-settings-definition.cfapps.sap.hana.ondemand.com/runsettingsdefinition/CalculationRuns?$filter = DESCRIPTION_RUN eq 'Smart Product Group'&$orderby=CREATED_AT desc&$top=1";
+
+		String URL = "https://telcobigdata-test-margin-assurance-result-explorer.cfapps.sap.hana.ondemand.com/resultexplorer/ResultCompareServicess?$filter=SELECTION_ID eq '9018' and PEER_GROUP_ID eq '0' and CLUSTER_NUMBER eq '999999' and COMPARISON_TYPE eq '0' "
+				+ "&$orderby=DEVIATION desc&$top=3";
+		//		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(URL)
+		        // Add query parameter
+		//		.queryParam("$orderby", "CREATED_AT desc")
+//				.queryParam("order", "desc")
+	//			.queryParam("$top", "1");
+//				.queryParam("$format", "json");
+		System.out.println(URL);
+		try {
+//			String respBody = getResponseFromCng(URL, httpMethod, null);
+//			if (respBody != null) {
+//				System.out.println("Inside status");
+//			JSONObject jsonObject = null;
+//			try {
+//				jsonObject = new JSONObject(respBody);
+//			} catch (JSONException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			//System.out.println("Array Searching");
+//			JSONArray results = jsonObject.getJSONObject("d").getJSONArray("results");
+			
+			//System.out.println(" After Results");
+				output = "The services which are impacting the margin are International Phone Call, Promotion Discount and Retention Discount. " ;
+				System.out.println(output);				
+//				categories.add(category);
+				
+//			}
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return output;
+	}
 	
 //	public List<Category> getCategories(String tenantId, HttpMethod httpMethod)
 //			throws ProxyServicesException {
